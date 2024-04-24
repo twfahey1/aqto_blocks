@@ -1,0 +1,5 @@
+name: 'aqto_blocks'
+type: module
+description: 'Provides building blocks for an Aqto site.'
+package: Custom
+core_version_requirement: ^10 || ^11

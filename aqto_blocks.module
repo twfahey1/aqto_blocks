@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for aqto_blocks module.
+ */
+// Hook theme 
+function aqto_blocks_theme() {
+  return array(
+    'aqto_admin_dashboard_example' => array(
+      'variables' => array('content' => NULL),
+    ),
+  );
+}
