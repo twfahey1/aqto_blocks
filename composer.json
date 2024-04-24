@@ -1,0 +1,16 @@
+{
+    "name": "twfahey1/aqto_blocks",
+    "type": "drupal-module",
+    "description": "Provides blocks for Aqto sites.",
+    "keywords": ["Drupal", "module"],
+    "homepage": "https://github.com/twfahey1/aqto_blocks",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Tyler Fahey",
+            "email": "twfahey1@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
