@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Url;
 use Drupal\Core\Utility\Token;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -90,6 +91,7 @@ final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInt
     $this->configuration['menu_title'] = $form_state->getValue('menu_title');
   }
 
+
   public function build(): array
   {
     $build = [];
@@ -104,7 +106,7 @@ final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInt
     $menu_links = array_map(
       fn ($menu_link) => [
         'title' => $menu_link->label(),
-        'url' => \Drupal::service('file_url_generator')->generateAbsoluteString($menu_link->link->uri),
+        'url' => Url::fromUri($menu_link->link->uri)->toString(),
       ],
       $menu_links
     );
