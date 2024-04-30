@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\aqto_blocks\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
@@ -9,10 +7,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Utility\Token;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides an aqto admin dashboard example block.
+ * Provides an Aqto Menu Block with token support.
  *
  * @Block(
  *   id = "aqto_blocks_aqto_menu_block",
@@ -20,48 +19,45 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("Aqto"),
  * )
  */
-final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInterface
+{
 
-  /**
-   * Constructs the plugin instance.
-   */
+  private readonly Token $token;
+
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountProxyInterface $currentUser,
+    Token $token
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->token = $token;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self
+  {
     return new self(
       $configuration,
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('current_user'),
+      $container->get('token')
     );
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function defaultConfiguration(): array {
+  public function defaultConfiguration(): array
+  {
     return [
       'menu_to_use' => NULL,
+      'menu_title' => '',
     ];
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function blockForm($form, FormStateInterface $form_state): array {
-    // Lets do a 'menu_to_use' that is a select list of menus.
+  public function blockForm($form, FormStateInterface $form_state): array
+  {
     $form['menu_to_use'] = [
       '#type' => 'select',
       '#title' => $this->t('Menu to use'),
@@ -71,21 +67,31 @@ final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInt
       ),
       '#default_value' => $this->configuration['menu_to_use'],
     ];
+
+    $form['menu_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Menu Title'),
+      '#description' => $this->t('You can use tokens like [site:name] or [user:mail].'),
+      '#default_value' => $this->configuration['menu_title'],
+    ];
+
+    // Attach the token tree UI for user-friendly token selection.
+    $form['token_tree'] = [
+      '#theme' => 'token_tree_link',
+      '#token_types' => ['site', 'user'],
+    ];
+
     return $form;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function blockSubmit($form, FormStateInterface $form_state): void {
+  public function blockSubmit($form, FormStateInterface $form_state): void
+  {
     $this->configuration['menu_to_use'] = $form_state->getValue('menu_to_use');
+    $this->configuration['menu_title'] = $form_state->getValue('menu_title');
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function build(): array {
-    // Load up the chosen menu, and lets massage it into an array of title -> url.
+  public function build(): array
+  {
     $build = [];
     if (!$this->configuration['menu_to_use']) {
       return [];
@@ -106,8 +112,8 @@ final class AqtoMenuBlock extends BlockBase implements ContainerFactoryPluginInt
     $build['content'] = [
       '#theme' => 'aqto_menu',
       '#menu_to_use' => $menu_links,
+      '#menu_title' => $this->token->replace($this->configuration['menu_title'], ['user' => $this->currentUser]),
     ];
     return $build;
   }
-
 }

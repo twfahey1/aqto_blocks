@@ -11,7 +11,10 @@ function aqto_blocks_theme() {
       'variables' => array('content' => NULL),
     ),
     'aqto_menu' => array(
-      'variables' => array('menu_to_use' => NULL),
+      'variables' => array(
+        'menu_to_use' => NULL,
+        'menu_title' => 'Site Menu',
+      ),
     ),
   );
 }
