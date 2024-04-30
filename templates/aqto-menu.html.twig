@@ -1,0 +1,41 @@
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/y0C3fTv0Oab
+-->
+
+<header x-data="{ isOpen: false }" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl rounded-xl bg-white/80 backdrop-blur-md shadow-lg dark:bg-gray-950/80">
+	<div class="flex h-14 items-center justify-between px-6">
+		<a class="flex items-center gap-2" href="#">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+				<path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+			</svg>
+			<span class="text-lg font-semibold">Acme Inc.</span>
+		</a>
+		<div class="flex items-center gap-4">
+			{% if menu_to_use %}
+				<!-- Mobile navigation menu (hidden on medium and up screens) -->
+				<nav x-show="isOpen" class="flex flex-col md:flex-row md:static absolute top-full right-0 left-0 bg-white dark:bg-gray-950 shadow-md md:shadow-none p-4 md:p-0 md:bg-transparent md:backdrop-blur-none z-20 md:hidden">
+					{% for item in menu_to_use %}
+						<a class="text-sm font-medium hover:underline" href="{{ item.url }}">{{ item.title }}</a>
+					{% endfor %}
+
+				</nav>
+			{% else %}
+
+				{# Show a small card "no menu items available" #}
+				<div class="flex items-center gap-2">
+					<p>No items available</p>
+				</div>
+			{% endif %}
+
+			<button @click="isOpen = !isOpen" :aria-expanded="isOpen.toString()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10 md:hidden" type="button" aria-haspopup="dialog" aria-controls="radix-:r0:" data-state="closed">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+					<line x1="4" x2="20" y1="12" y2="12"></line>
+					<line x1="4" x2="20" y1="6" y2="6"></line>
+					<line x1="4" x2="20" y1="18" y2="18"></line>
+				</svg>
+				<span class="sr-only">Toggle navigation menu</span>
+			</button>
+		</div>
+	</div>
+</header>

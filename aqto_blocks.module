@@ -10,5 +10,8 @@ function aqto_blocks_theme() {
     'aqto_admin_dashboard_example' => array(
       'variables' => array('content' => NULL),
     ),
+    'aqto_menu' => array(
+      'variables' => array('menu_to_use' => NULL),
+    ),
   );
 }
