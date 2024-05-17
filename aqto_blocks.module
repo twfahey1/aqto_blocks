@@ -18,3 +18,11 @@ function aqto_blocks_theme() {
     ),
   );
 }
+
+function aqto_blocks_preprocess_aqto_menu(&$variables) {
+  $current_user = \Drupal::currentUser();
+  // Lets check if the user has the 'Use the toolbar' permission in any of their roles.
+  if ($current_user->hasPermission('use the toolbar')) {
+    $variables['attributes']['class'][] = 'toolbar-user';
+  }
+}
