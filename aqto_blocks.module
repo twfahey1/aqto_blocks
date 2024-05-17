@@ -21,8 +21,9 @@ function aqto_blocks_theme() {
 
 function aqto_blocks_preprocess_aqto_menu(&$variables) {
   $current_user = \Drupal::currentUser();
-  // Lets check if the user has the 'Use the toolbar' permission in any of their roles.
-  if ($current_user->hasPermission('use the toolbar')) {
+  // Lets check if the user has the 'Use the toolbar' permission in any of their roles to add a class to push down the menu.
+  if ($current_user->hasPermission('use the toolbar') ||
+    $current_user->id() == 1) {  // Or if the user is user 1: the super admin.
     $variables['attributes']['class'][] = 'toolbar-user';
   }
 }

@@ -1,4 +1,4 @@
-<header x-data="{ isOpen: false, width: window.innerWidth }" @resize.window="width = window.innerWidth" class="fixed {% if attributes.hasClass('authenticated-user') %} top-12 {% else %} top-4 {% endif %} left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl rounded-xl bg-white/80 backdrop-blur-md shadow-lg dark:bg-gray-950/80">
+<header x-data="{ isOpen: false, width: window.innerWidth }" @resize.window="width = window.innerWidth" class="fixed {% if attributes.hasClass('toolbar-user') %} top-12 {% else %} top-4 {% endif %} left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl rounded-xl bg-white/80 backdrop-blur-md shadow-lg dark:bg-gray-950/80">
 	<div class="flex h-14 items-center justify-between px-6">
 		<a class="flex items-center gap-2" href="/">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
